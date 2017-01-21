@@ -10,12 +10,19 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+use App\Role;
 use App\User;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/admin', function () {
+    return view('admin.index');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('admin/users', 'AdminUsersController');
