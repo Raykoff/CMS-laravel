@@ -19,13 +19,35 @@
             </div>
 
             <div class="form-group">
-                {!! Form::label('role_id', 'Role') !!}
-                {!! Form::text('role_id',null, ['class' => 'form-control', 'style' => 'width:40%']) !!}
+                {!! Form::label('password', 'Contraseña') !!}
+                {!! Form::password('password', ['class' => 'form-control', 'style' => 'width:40%']) !!}
             </div>
 
             <div class="form-group">
-                {!! Form::label('status', 'Estado') !!}
-                {!! Form::text('status',null, ['class' => 'form-control', 'style' => 'width:40%']) !!}
+                {!! Form::label('password2', 'Repetir contraseña') !!}
+                {!! Form::password('password2', ['class' => 'form-control', 'style' => 'width:40%']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('role_id', 'Role') !!}
+                {!! Form::select('role_id',['' => 'Choose option'] + $roles, null, ['class' => 'form-control', 'style' => 'width:20%']) !!}
+            </div>
+
+            <div class="form-group">
+                {!! Form::label('is_active', 'Estado') !!}
+                {!! Form::select('is_active', array(''=> 'Choose option', 1 => 'Activo', 0 => 'No activo'), null, ['class' => 'form-control', 'style' => 'width:20%']) !!}
+            </div>
+
+            <div class="form-group" style="width: 40%">
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
 
     <div class="form-group">
@@ -35,4 +57,6 @@
     </div>
 
     {!! Form::close() !!}
+
+
 @endsection
