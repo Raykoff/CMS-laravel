@@ -34,6 +34,7 @@ class AdminUsersController extends Controller
         //
         $roles = Role::pluck('name', 'id')->all();
 
+
         return view('admin.users.create', ['roles' => $roles]);
     }
 
@@ -45,13 +46,12 @@ class AdminUsersController extends Controller
      */
     public function store(UsersRequest $request)
     {
-        //
-
         $userData = $request->all();
-
 
         User::create(['role_id' => $userData['role_id'], 'is_active' => $userData['is_active'],
             'name' => $userData['name'], 'password' => Hash::make($userData['password']), 'email' => $userData['email']]);
+
+
 
         return redirect('/admin/users');
 

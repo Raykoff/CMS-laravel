@@ -4,7 +4,7 @@
 
     <h2>Create User</h2>
 
-    {!! Form::open(['method' => 'POST', 'action' => 'AdminUsersController@store']) !!}
+    {!! Form::open(['method' => 'POST', 'action' => 'AdminUsersController@store', 'files' => true]) !!}
 
     <div class="container-fluid">
         <div class="row">
@@ -38,17 +38,12 @@
                 {!! Form::select('is_active', array(''=> 'Choose option', 1 => 'Activo', 0 => 'No activo'), null, ['class' => 'form-control', 'style' => 'width:20%']) !!}
             </div>
 
-            <div class="form-group" style="width: 40%">
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+            <div class="form-group">
+                {!! Form::label('file', 'File:') !!}
+                {!! Form::file('file', null, ['class' => 'form-control']) !!}
             </div>
+
+            @include('includes.form_error')
 
     <div class="form-group">
         {!! Form::submit('Crear', ['class' => 'btn btn-primary']) !!}
