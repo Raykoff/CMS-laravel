@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
 use App\User;
+use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AdminUsersController extends Controller
 {
@@ -19,7 +20,7 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        $users = User::all();
+        $users = User::paginate(7);
 
         return view('admin.users.index', ['users'=>$users]);
 
@@ -109,9 +110,46 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         //
+        $updateData = $request->all();
+
+        $user = User::findOrFail($id);
+
+
+        if($updateData['password']) {
+
+            $updateData['password'] = bcrypt($updateData['password']);
+
+        } else {
+            $updateData['password'] = $user->password;
+        }
+
+        if($file = $request->file('photo_id')){
+
+            $name = time() . $file->getClientOriginalName();
+
+            $file->move('images', $name);
+
+            $photo = Photo::create(['name' => $name]);
+
+            if($user->photo){
+                unlink(public_path($user->photo->name));
+
+                $photoToDelete = Photo::findOrFail($user->photo_id);
+
+                $photoToDelete->delete();
+            }
+
+            $updateData['photo_id'] = $photo->id;
+
+        }
+
+
+        $user->update($updateData);
+
+        return redirect('/admin/users');
     }
 
     /**
@@ -123,5 +161,22 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        $user = User::findOrFail($id);
+
+        if($user->photo){
+            $image = $user->photo->name;
+
+            unlink(public_path($image));
+
+            $photo = Photo::findOrFail($user->photo_id);
+            $photo->delete();
+        }
+
+        $user->delete();
+
+
+        return redirect('/admin/users');
+
+
     }
 }
