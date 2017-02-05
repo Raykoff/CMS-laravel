@@ -2,7 +2,11 @@
 
 @section('content')
 
+
+
     <h1>Users</h1>
+
+    @include('flash::message')
 
 
 <div class="row">
@@ -28,7 +32,7 @@
             <td><img style="height: 18%" class="img-responsive img-rounded" src="{{$user->photo ? $user->photo->name : 'http://placehold.it/400x400'}}" alt=""></td>
             <td>{{$user->email}}</td>
             <td>{{$user->role->name}}</td>
-            <td>{{$user->is_active == 1 ? 'Active' : 'Not    active' }}</td>
+            <td>{{$user->is_active == 1 ? 'Active' : 'Not active' }}</td>
             <td>{{$user->created_at->diffForHumans()}}</td>
             <td>{{$user->updated_at->diffForHumans()}}</td>
             <td>
@@ -46,9 +50,11 @@
         </tbody>
     </table>
 </div>
+
     <div class="row" style="margin-left: 40%">
         {{ $users->links() }}
     </div>
+
 
 
 

@@ -244,8 +244,13 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('js/libs.js')}}"></script>
-
+{{--<script src="{{asset('js/libs.js')}}"></script>--}}
+<script src="{{asset('js/app.js')}}"></script>
+<script src="//code.jquery.com/jquery.js"></script>
+<script>
+    $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+</script>
+{{--<script>$('#flash-overlay-modal').modal();</script>--}}
 @yield('footer')
 
 </body>

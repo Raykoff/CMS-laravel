@@ -9,6 +9,9 @@ use App\Role;
 use App\User;
 use File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller
 {
@@ -21,6 +24,9 @@ class AdminUsersController extends Controller
     {
         //
         $users = User::paginate(7);
+
+
+
 
         return view('admin.users.index', ['users'=>$users]);
 
@@ -65,6 +71,8 @@ class AdminUsersController extends Controller
         $userData['password'] = bcrypt($userData['password']);
 
         User::create($userData);
+
+        flash('El usuario se ha creado','success');
 //        User::create(['role_id' => $userData['role_id'], 'is_active' => $userData['is_active'],
 //            'name' => $userData['name'], 'password' => Hash::make($userData['password']), 'email' => $userData['email'],  'photo_id' => $userData['photo_id']]);
 
@@ -146,6 +154,8 @@ class AdminUsersController extends Controller
 
         }
 
+        flash('El usuario se ha actualizado de forma correcta', 'success');
+
 
         $user->update($updateData);
 
@@ -173,6 +183,8 @@ class AdminUsersController extends Controller
         }
 
         $user->delete();
+
+        flash('El usuario se ha borrado de forma correcta', 'danger');
 
 
         return redirect('/admin/users');
