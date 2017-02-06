@@ -2,9 +2,8 @@
 
 @section('content')
     <div class="container">
-        <h1>404 Page</h1>
-        <h3>La pagina no existe</h3>
+        <h2 class="text-center">Opps no existe esta pagina</h2>
     </div>
 
 
-    @endsection
+@endsection

@@ -26,9 +26,7 @@ class AdminUsersController extends Controller
         $users = User::paginate(7);
 
 
-
-
-        return view('admin.users.index', ['users'=>$users]);
+        return view('admin.users.index', ['users' => $users]);
 
     }
 
@@ -49,14 +47,14 @@ class AdminUsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(UsersRequest $request)
     {
         $userData = $request->all();
 
-        if($file = $request->file('photo_id')){
+        if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
 
@@ -66,20 +64,18 @@ class AdminUsersController extends Controller
 
             $userData['photo_id'] = $photo->id;
 
-    }
+        }
 
         $userData['password'] = bcrypt($userData['password']);
 
         User::create($userData);
 
-        flash('El usuario se ha creado','success');
+        flash('El usuario se ha creado', 'success');
 //        User::create(['role_id' => $userData['role_id'], 'is_active' => $userData['is_active'],
 //            'name' => $userData['name'], 'password' => Hash::make($userData['password']), 'email' => $userData['email'],  'photo_id' => $userData['photo_id']]);
 
 
-
         return redirect('/admin/users');
-
 
 
     }
@@ -87,7 +83,7 @@ class AdminUsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -98,13 +94,13 @@ class AdminUsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
-        $roles = Role::pluck('name','id')->all();
+        $roles = Role::pluck('name', 'id')->all();
 
         $user = User::findOrFail($id);
 
@@ -114,8 +110,8 @@ class AdminUsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateUserRequest $request, $id)
@@ -126,7 +122,7 @@ class AdminUsersController extends Controller
         $user = User::findOrFail($id);
 
 
-        if($updateData['password']) {
+        if ($updateData['password']) {
 
             $updateData['password'] = bcrypt($updateData['password']);
 
@@ -134,7 +130,7 @@ class AdminUsersController extends Controller
             $updateData['password'] = $user->password;
         }
 
-        if($file = $request->file('photo_id')){
+        if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
 
@@ -142,7 +138,7 @@ class AdminUsersController extends Controller
 
             $photo = Photo::create(['name' => $name]);
 
-            if($user->photo){
+            if ($user->photo) {
                 unlink(public_path($user->photo->name));
 
                 $photoToDelete = Photo::findOrFail($user->photo_id);
@@ -165,7 +161,7 @@ class AdminUsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -173,7 +169,7 @@ class AdminUsersController extends Controller
         //
         $user = User::findOrFail($id);
 
-        if($user->photo){
+        if ($user->photo) {
             $image = $user->photo->name;
 
             unlink(public_path($image));
