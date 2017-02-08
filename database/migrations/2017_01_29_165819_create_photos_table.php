@@ -18,6 +18,8 @@ class CreatePhotosTable extends Migration
             $table->string('name');
             
             $table->timestamps();
+
+
         });
     }
 

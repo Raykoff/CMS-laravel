@@ -50,7 +50,7 @@
                     <i class="fa fa-user fa-fw"></i> {{Auth::user()->name}} <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><img src="{{Auth::user()->photo->name}}" alt="" class="img-responsive img-circle"
+                    <li><img src="{{Auth::user()->photo ? Auth::user()->photo->name: 'http://placehold.it/400x400'}}" alt="" class="img-responsive img-circle"
                              style="height: 80px; margin-left: 50px;">
                     </li>
                     <li><a href="{{route('users.edit', Auth::user()->id)}}"><i class="fa fa-user fa-fw"></i> User
@@ -263,7 +263,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
-    $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+    $('div.alert').not('.alert-important').delay(3000);
 </script>
 {{--<script>$('#flash-overlay-modal').modal();</script>--}}
 @yield('footer')

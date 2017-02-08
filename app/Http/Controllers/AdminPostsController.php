@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\PostsCreateRequest;
+use App\Photo;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +20,8 @@ class AdminPostsController extends Controller
     {
         //
         $posts = Post::paginate(7);
+
+
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -41,7 +45,7 @@ class AdminPostsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostsCreateRequest $request)
     {
         //
 
@@ -49,6 +53,18 @@ class AdminPostsController extends Controller
         $postData = $request->all();
 
         $postData['user_id'] = Auth::user()->id;
+
+        if ($file = $request->file('photo_id')) {
+
+            $name = time() . $file->getClientOriginalName();
+
+            $file->move('images', $name);
+
+            $photo = Photo::create(['name' => $name]);
+
+            $postData['photo_id'] = $photo->id;
+
+        }
 
 
         Post::create($postData);
@@ -79,8 +95,10 @@ class AdminPostsController extends Controller
     public function edit($id)
     {
         //
+        $post = Post::findOrFail($id);
+        $categories = Category::pluck('name','id')->all();
 
-        return view('admin.posts.edit');
+        return view('admin.posts.edit',compact('post','categories'));
     }
 
     /**
@@ -104,5 +122,23 @@ class AdminPostsController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::findOrFail($id);
+
+        if ($post->photo) {
+            $image = $post->photo->name;
+
+            unlink(public_path($image));
+
+            $photo = Photo::findOrFail($post->photo_id);
+            $photo->delete();
+        }
+
+        $post->delete();
+
+        flash('El post se ha borrado','danger');
+
+        return redirect(url('admin/posts'));
+
+
     }
 }

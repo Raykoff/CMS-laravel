@@ -45,9 +45,9 @@
 
             @include('includes.form_error')
 
-    <div class="form-group">
-        {!! Form::submit('Crear', ['class' => 'btn btn-primary']) !!}
-    </div>
+            <div class="form-group">
+                {!! Form::submit('Crear', ['class' => 'btn btn-primary']) !!}
+            </div>
         </div>
     </div>
 
